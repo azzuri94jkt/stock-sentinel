@@ -1,0 +1,12 @@
+yfinance
+pandas
+openpyxl
+anthropic
+python-dotenv
+streamlit
+streamlit-authenticator
+sqlalchemy
+requests
+pytest
+schedule
+plotly

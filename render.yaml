@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: stock-sentinel
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app/main.py --server.port $PORT --server.address 0.0.0.0
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: NEWS_API_KEY
+        sync: false
+      - key: MIN_MENTION_THRESHOLD
+        value: "8"
+      - key: MAX_TICKERS_TO_RESEARCH
+        value: "20"
+      - key: TOP_N_FINAL
+        value: "5"
+      - key: DATABASE_URL
+        value: "sqlite:///stock_sentinel.db"
+
+  - type: worker
+    name: stock-sentinel-scheduler
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run_scheduler.py
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: NEWS_API_KEY
+        sync: false
+      - key: MIN_MENTION_THRESHOLD
+        value: "8"
+      - key: MAX_TICKERS_TO_RESEARCH
+        value: "20"
+      - key: TOP_N_FINAL
+        value: "5"
+      - key: DATABASE_URL
+        value: "sqlite:///stock_sentinel.db"

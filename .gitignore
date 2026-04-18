@@ -1,0 +1,45 @@
+# ── Secrets — never commit these ─────────────────────────────────────────────
+.env
+config.yaml
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+
+# ── Database ──────────────────────────────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+
+# ── Generated data (large / ephemeral) ───────────────────────────────────────
+data/reports/
+data/reddit_raw.json
+data/haiku_filter_results.json
+
+# ── Cache ─────────────────────────────────────────────────────────────────────
+/tmp/stock_sentinel_cache/
+
+# ── OS / editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
