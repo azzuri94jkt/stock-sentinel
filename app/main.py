@@ -15,6 +15,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
 
+# ── Generate config.yaml if missing (handles fresh Render deploys) ────────────
+from setup_config import ensure_config as _ensure_config
+_ensure_config()
+
 # ── Page config (must be first Streamlit call) ────────────────────────────────
 st.set_page_config(
     page_title="Stock Sentinel",
