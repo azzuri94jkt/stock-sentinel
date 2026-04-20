@@ -97,7 +97,7 @@ def step_analyse(passed: list, run_date: str) -> list:
     return analyses
 
 
-def step_save_daily_results(run_date: str, analyses: list, top_n: int) -> list:
+def step_save_daily_results(run_date: str, analyses: list, top_n: int, run_id: int = 0) -> list:
     """Persist top-N analyses to daily_results and final_picks DB tables."""
     from db.database import save_daily_result, save_final_picks
 
@@ -112,12 +112,11 @@ def step_save_daily_results(run_date: str, analyses: list, top_n: int) -> list:
         a_with_date = {**a, "run_date": run_date}
         save_daily_result(run_date, a_with_date)
 
-    # Adapt to legacy final_picks schema
     picks_legacy = [
         {**p, "overall_score": int(float(p.get("composite_score") or 0) * 10)}
         for p in picks
     ]
-    save_final_picks(0, picks_legacy)   # run_id=0 when called outside run_log context
+    save_final_picks(run_id, picks_legacy)
 
     log.info("  %d results saved to daily_results  |  top %d saved to final_picks", len(valid), len(picks))
     return picks
@@ -203,7 +202,7 @@ def run(dry_run: bool = False, override_tickers: list = None) -> dict:
         summary["errors"]   = [a["ticker"] for a in analyses if a.get("error")]
 
         # ── Save to DB ────────────────────────────────────────────────────────
-        step_save_daily_results(run_date, analyses, top_n)
+        step_save_daily_results(run_date, analyses, top_n, run_id)
 
         # ── Step 5: Excel report ──────────────────────────────────────────────
         report_path = step_excel(analyses, mentions, run_date)
