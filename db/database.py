@@ -48,10 +48,10 @@ def get_session():
 def create_run(run_date: str) -> int:
     with get_session() as s:
         result = s.execute(
-            text("INSERT INTO run_log (run_date, status) VALUES (:d, 'running')"),
+            text("INSERT INTO run_log (run_date, status) VALUES (:d, 'running') RETURNING id"),
             {"d": run_date},
         )
-        return result.lastrowid
+        return result.scalar()
 
 
 def complete_run(run_id: int) -> None:
